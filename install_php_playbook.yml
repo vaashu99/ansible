@@ -1,0 +1,13 @@
+
+---
+
+- hosts: grp1
+  become: true
+  tasks:
+    - name: php install
+      yum: name=php state=installed disable_gpg_check=yes
+      register: installout
+ 
+    - name: php validation
+      command: php -v
+      when: installout|success
