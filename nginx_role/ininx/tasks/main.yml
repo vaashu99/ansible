@@ -1,0 +1,22 @@
+---
+# tasks file for ininx
+    - name: install nginx web server
+      yum: name=nginx state=installed disable_gpg_check=yes
+      notify:
+        - start nginx
+
+    - name: upload default indext.nginxinst for hosts
+      copy: src=index.nginxinst dest=/usr/share/nginx/www/ mode=0644
+      register: nginxinst
+      ignore_errors: True
+
+    - name: remove index.html for hosts
+      command: rm /usr/share/nginx/www/index.html
+      when: nginxinst|success
+
+    - name: upload default index.html fir hosts
+      copy: src=index.html dest=/usr/share/nginx/www/ mode=0644
+      when: nginxinst|failed
+      notify:
+        - restart nginx
+

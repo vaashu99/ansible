@@ -1,0 +1,6 @@
+---
+
+- hosts: grp1
+  become: true
+  roles:
+    - ininx
